@@ -1,0 +1,92 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Farmer {
+  id          String    @id @default(cuid())
+  phone       String    @unique
+  name        String
+  nationalId  String?
+  village     String
+  district    String
+  country     String    @default("KE")
+  latitude    Float?
+  longitude   Float?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  farms       Farm[]
+}
+
+model Farm {
+  id          String    @id @default(cuid())
+  farmerId    String
+  farmer      Farmer    @relation(fields: [farmerId], references: [id])
+  name        String
+  sizeHectares Float
+  cropTypes   String[]
+  latitude    Float?
+  longitude   Float?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  harvests    Harvest[]
+}
+
+model Harvest {
+  id              String    @id @default(cuid())
+  farmId          String
+  farm            Farm      @relation(fields: [farmId], references: [id])
+  cropType        String
+  quantityKg      Float
+  harvestDate     DateTime
+  qualityGrade    String?   // A, B, C
+  notes           String?
+  qrCode          String?   @unique
+  blockchainTxHash String?
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+
+  shipments       Shipment[]
+  certifications  Certification[]
+}
+
+model Shipment {
+  id              String          @id @default(cuid())
+  harvestId       String
+  harvest         Harvest         @relation(fields: [harvestId], references: [id])
+  origin          String
+  destination     String
+  carrier         String?
+  quantityKg      Float
+  status          ShipmentStatus  @default(PENDING)
+  departedAt      DateTime?
+  arrivedAt       DateTime?
+  blockchainTxHash String?
+  createdAt       DateTime        @default(now())
+  updatedAt       DateTime        @updatedAt
+}
+
+model Certification {
+  id          String    @id @default(cuid())
+  harvestId   String
+  harvest     Harvest   @relation(fields: [harvestId], references: [id])
+  type        String    // e.g. "ORGANIC", "FAIR_TRADE", "GLOBALG.A.P"
+  issuedBy    String
+  issuedAt    DateTime
+  expiresAt   DateTime?
+  documentUrl String?
+  createdAt   DateTime  @default(now())
+}
+
+enum ShipmentStatus {
+  PENDING
+  IN_TRANSIT
+  DELIVERED
+  CANCELLED
+}

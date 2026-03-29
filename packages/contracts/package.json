@@ -1,0 +1,17 @@
+{
+  "name": "@agritrace/contracts",
+  "version": "0.0.1",
+  "private": true,
+  "scripts": {
+    "compile": "hardhat compile",
+    "deploy:amoy": "hardhat run scripts/deploy.ts --network amoy",
+    "test": "hardhat test"
+  },
+  "devDependencies": {
+    "@nomicfoundation/hardhat-toolbox": "^5.0.0",
+    "hardhat": "^2.22.0",
+    "typescript": "^5.4.0",
+    "ts-node": "^10.9.2",
+    "@types/node": "^20.12.0"
+  }
+}
