@@ -1,4 +1,5 @@
 import Link from 'next/link'
+import Image from 'next/image'
 
 export function Footer() {
   return (
@@ -6,7 +7,10 @@ export function Footer() {
       <div className="max-w-7xl mx-auto px-6 py-14 grid grid-cols-1 md:grid-cols-4 gap-10">
         {/* Brand */}
         <div className="md:col-span-2">
-          <p className="font-['Oxanium'] font-bold text-2xl text-[#F9D548] mb-3">QLF Group</p>
+          <div className="flex items-center gap-3 mb-3">
+            <Image src="/logo.png" alt="QLF Group" width={32} height={32} className="w-8 h-8" />
+            <p className="font-oxanium font-bold text-xl text-[#F9D548]">QLF Group</p>
+          </div>
           <p className="text-gray-400 text-sm leading-relaxed max-w-sm">
             Quantum Agro Light Farms Ltd — feeding Africa through sustainable agriculture,
             technology-enabled farming, and transparent supply chains.

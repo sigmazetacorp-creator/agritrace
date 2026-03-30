@@ -1,6 +1,7 @@
 'use client'
 
 import Link from 'next/link'
+import Image from 'next/image'
 import { useState } from 'react'
 
 export function Nav() {
@@ -10,9 +11,9 @@ export function Nav() {
     <nav className="fixed top-0 left-0 right-0 z-50 bg-[#181A20]/95 backdrop-blur border-b border-white/10">
       <div className="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
         {/* Logo */}
-        <Link href="/" className="flex items-center gap-2">
-          <span className="font-['Oxanium'] font-bold text-xl text-[#F9D548]">QLF</span>
-          <span className="font-['Oxanium'] text-sm text-gray-400 hidden sm:block">Group</span>
+        <Link href="/" className="flex items-center gap-3">
+          <Image src="/logo.png" alt="QLF Group" width={40} height={40} className="w-10 h-10" />
+          <span className="font-oxanium font-bold text-lg text-white hidden sm:block">QLF Group</span>
         </Link>
 
         {/* Desktop links */}
