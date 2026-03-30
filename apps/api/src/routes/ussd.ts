@@ -77,7 +77,7 @@ You can now log harvests.`
         if (farms.length === 0) {
           response = 'END You have no farms registered. Contact your cooperative agent to add a farm.'
         } else {
-          const farmList = farms.map((f, i) => `${i + 1}. ${f.name}`).join('\n')
+          const farmList = farms.map((f: { name: string }, i: number) => `${i + 1}. ${f.name}`).join('\n')
           response = `CON Select farm:\n${farmList}`
         }
       } else if (level === 2) {
@@ -121,7 +121,7 @@ ID: ${harvest.qrCode}`
         if (farms.length === 0) {
           response = 'END No farms found. Contact your cooperative agent.'
         } else {
-          const farmList = farms.map(f => `${f.name} (${f.sizeHectares}ha)`).join('\n')
+          const farmList = farms.map((f: { name: string; sizeHectares: number }) => `${f.name} (${f.sizeHectares}ha)`).join('\n')
           response = `END Your farms:\n${farmList}`
         }
       }

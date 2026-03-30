@@ -9,10 +9,10 @@ const TEST_PHONE = '+254799000001'
 
 async function cleanTestFarmers() {
   const farmers = await prisma.farmer.findMany({ where: { phone: TEST_PHONE } })
-  const ids = farmers.map(f => f.id)
+  const ids = farmers.map((f: { id: string }) => f.id)
   if (ids.length === 0) return
   const farms = await prisma.farm.findMany({ where: { farmerId: { in: ids } } })
-  const farmIds = farms.map(f => f.id)
+  const farmIds = farms.map((f: { id: string }) => f.id)
   await prisma.harvest.deleteMany({ where: { farmId: { in: farmIds } } })
   await prisma.farm.deleteMany({ where: { farmerId: { in: ids } } })
   await prisma.farmer.deleteMany({ where: { id: { in: ids } } })
