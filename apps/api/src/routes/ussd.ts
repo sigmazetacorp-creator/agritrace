@@ -3,6 +3,15 @@ import { PrismaClient } from '@prisma/client'
 
 const prisma = new PrismaClient()
 
+function countryFromPhone(phone: string): string {
+  if (phone.startsWith('+234')) return 'NG'
+  if (phone.startsWith('+254')) return 'KE'
+  if (phone.startsWith('+255')) return 'TZ'
+  if (phone.startsWith('+256')) return 'UG'
+  if (phone.startsWith('+233')) return 'GH'
+  return 'KE' // default
+}
+
 /*
   Africa's Talking USSD session flow:
 
@@ -56,7 +65,7 @@ export async function ussdRoutes(app: FastifyInstance) {
           response = `END You are already registered as ${existing.name}.`
         } else {
           await prisma.farmer.create({
-            data: { phone: phoneNumber, name, village, district }
+            data: { phone: phoneNumber, name, village, district, country: countryFromPhone(phoneNumber) }
           })
           response = `END Registration successful!
 Name: ${name}

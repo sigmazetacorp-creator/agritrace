@@ -3,6 +3,15 @@ import { PrismaClient } from '@prisma/client'
 
 const prisma = new PrismaClient()
 
+function countryFromPhone(phone: string): string {
+  if (phone.startsWith('+234')) return 'NG'
+  if (phone.startsWith('+254')) return 'KE'
+  if (phone.startsWith('+255')) return 'TZ'
+  if (phone.startsWith('+256')) return 'UG'
+  if (phone.startsWith('+233')) return 'GH'
+  return 'KE'
+}
+
 export async function farmerRoutes(app: FastifyInstance) {
   // GET /api/farmers — list all farmers
   app.get('/', async () => {
@@ -38,11 +47,14 @@ export async function farmerRoutes(app: FastifyInstance) {
       name: string
       village: string
       district: string
+      country?: string
       nationalId?: string
       latitude?: number
       longitude?: number
     }
-    const farmer = await prisma.farmer.create({ data: body })
+    const farmer = await prisma.farmer.create({
+      data: { ...body, country: body.country ?? countryFromPhone(body.phone) }
+    })
     return reply.status(201).send(farmer)
   })
 }
