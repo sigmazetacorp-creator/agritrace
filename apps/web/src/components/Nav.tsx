@@ -12,8 +12,8 @@ export function Nav() {
       <div className="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
         {/* Logo */}
         <Link href="/" className="flex items-center gap-3">
-          <Image src="/logo.png" alt="QLF Group" width={40} height={40} className="w-10 h-10" />
-          <span className="font-oxanium font-bold text-lg text-white hidden sm:block">QLF Group</span>
+          <Image src="/logo.png" alt="Quantum Agro Light Farms" width={40} height={40} className="w-10 h-10" />
+          <span className="font-oxanium font-bold text-sm text-white hidden sm:block">Quantum Agro Light Farms</span>
         </Link>
 
         {/* Desktop links */}

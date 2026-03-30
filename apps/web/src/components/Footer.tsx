@@ -8,12 +8,11 @@ export function Footer() {
         {/* Brand */}
         <div className="md:col-span-2">
           <div className="flex items-center gap-3 mb-3">
-            <Image src="/logo.png" alt="QLF Group" width={32} height={32} className="w-8 h-8" />
-            <p className="font-oxanium font-bold text-xl text-[#F9D548]">QLF Group</p>
+            <Image src="/logo.png" alt="Quantum Agro Light Farms" width={32} height={32} className="w-8 h-8" />
+            <p className="font-oxanium font-bold text-lg text-[#F9D548]">Quantum Agro Light Farms</p>
           </div>
           <p className="text-gray-400 text-sm leading-relaxed max-w-sm">
-            Quantum Agro Light Farms Ltd — feeding Africa through sustainable agriculture,
-            technology-enabled farming, and transparent supply chains.
+            QLF — feeding Africa through sustainable agriculture, technology-enabled farming, and transparent supply chains.
           </p>
           <div className="flex gap-4 mt-5">
             <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" className="text-gray-500 hover:text-[#F9D548] transition-colors text-sm">Instagram</a>

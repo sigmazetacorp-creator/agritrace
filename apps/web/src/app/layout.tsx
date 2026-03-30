@@ -18,8 +18,8 @@ const mulish = Mulish({
 })
 
 export const metadata: Metadata = {
-  title: 'QLF Group — Feeding Africa, Cultivating Prosperity',
-  description: 'Quantum Agro Light Farms Ltd. Sustainable agriculture, commodity exports, and farm-to-fork traceability across Africa.',
+  title: 'Quantum Agro Light Farms — Feeding Africa, Cultivating Prosperity',
+  description: 'QLF Group. Sustainable agriculture, commodity exports, and farm-to-fork traceability across Africa.',
 }
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {

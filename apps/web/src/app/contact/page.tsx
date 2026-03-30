@@ -6,7 +6,7 @@ export default function ContactPage() {
       <section className="max-w-7xl mx-auto px-6 py-20">
         <div className="text-center mb-14">
           <p className="text-[#F9D548] text-sm font-semibold tracking-widest uppercase mb-4">Get In Touch</p>
-          <h1 className="text-5xl font-extrabold text-white mb-6">Contact QLF Group</h1>
+          <h1 className="text-5xl font-extrabold text-white mb-6">Contact Quantum Agro Light Farms</h1>
           <p className="text-gray-400 text-lg max-w-xl mx-auto">
             Reach out for export inquiries, partnership opportunities, or farmer cooperative registration.
           </p>

@@ -9,12 +9,7 @@ export default function HomePage() {
         <div className="absolute inset-0 bg-gradient-to-br from-[#181A20] via-[#1e2410] to-[#181A20]" />
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,_rgba(249,213,72,0.08)_0%,_transparent_60%)]" />
 
-        <div className="relative z-10 max-w-7xl mx-auto px-6 pt-32 pb-20 text-center">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-[#F9D548]/30 bg-[#F9D548]/10 text-[#F9D548] text-xs font-semibold tracking-wide mb-8">
-            <span className="w-1.5 h-1.5 rounded-full bg-[#F9D548] animate-pulse" />
-            Nigeria · Kenya · East Africa
-          </div>
-
+        <div className="relative z-10 max-w-7xl mx-auto px-6 pt-32 pb-32 text-center">
           <h1 className="text-5xl md:text-7xl font-extrabold text-white leading-tight mb-6">
             Feeding Africa,<br />
             <span className="text-[#F9D548]">Cultivating Prosperity</span>
@@ -39,12 +34,6 @@ export default function HomePage() {
               AgriTrace Portal
             </Link>
           </div>
-        </div>
-
-        {/* Scroll indicator */}
-        <div className="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 opacity-40">
-          <span className="text-xs text-gray-400">Scroll</span>
-          <div className="w-px h-10 bg-gradient-to-b from-gray-400 to-transparent" />
         </div>
       </section>
 
