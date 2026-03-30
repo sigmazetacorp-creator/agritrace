@@ -26,6 +26,7 @@ export function Footer() {
           <div className="flex flex-col gap-2 text-sm text-gray-400">
             <Link href="/about" className="hover:text-[#F9D548] transition-colors">About Us</Link>
             <Link href="/services" className="hover:text-[#F9D548] transition-colors">Services</Link>
+            <Link href="/blog" className="hover:text-[#F9D548] transition-colors">Blog</Link>
             <Link href="/contact" className="hover:text-[#F9D548] transition-colors">Contact</Link>
           </div>
         </div>
@@ -43,7 +44,7 @@ export function Footer() {
 
       <div className="border-t border-white/10 px-6 py-5 max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-2">
         <p className="text-gray-600 text-xs">© {new Date().getFullYear()} Quantum Agro Light Farms Ltd. All rights reserved.</p>
-        <p className="text-gray-600 text-xs">Nigeria · Kenya · East Africa</p>
+        <p className="text-gray-600 text-xs">Nigeria</p>
       </div>
     </footer>
   )
