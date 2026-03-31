@@ -7,6 +7,7 @@ import { ussdRoutes } from './routes/ussd'
 import { farmerRoutes } from './routes/farmers'
 import { harvestRoutes } from './routes/harvests'
 import { farmRoutes } from './routes/farms'
+import { linkedinRoutes } from './routes/linkedin'
 
 export function buildApp() {
   const app = Fastify({ logger: process.env.NODE_ENV !== 'test' })
@@ -26,6 +27,7 @@ export function buildApp() {
   app.register(farmerRoutes, { prefix: '/api/farmers' })
   app.register(harvestRoutes, { prefix: '/api/harvests' })
   app.register(farmRoutes, { prefix: '/api/farms' })
+  app.register(linkedinRoutes, { prefix: '/api/linkedin' })
 
   app.get('/health', async () => ({ status: 'ok' }))
 

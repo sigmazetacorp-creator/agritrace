@@ -20,6 +20,7 @@ export function Nav() {
         <div className="hidden md:flex items-center gap-8 text-sm font-medium">
           <Link href="/about" className="text-gray-300 hover:text-[#F9D548] transition-colors">About</Link>
           <Link href="/services" className="text-gray-300 hover:text-[#F9D548] transition-colors">Services</Link>
+          <Link href="/team" className="text-gray-300 hover:text-[#F9D548] transition-colors">Team</Link>
           <Link href="/blog" className="text-gray-300 hover:text-[#F9D548] transition-colors">Blog</Link>
           <Link href="/agritrace" className="text-gray-300 hover:text-[#F9D548] transition-colors">AgriTrace</Link>
           <Link href="/contact" className="text-gray-300 hover:text-[#F9D548] transition-colors">Contact</Link>
@@ -51,6 +52,7 @@ export function Nav() {
         <div className="md:hidden bg-[#1e2028] border-t border-white/10 px-6 py-4 flex flex-col gap-4 text-sm">
           <Link href="/about" className="text-gray-300 hover:text-[#F9D548]" onClick={() => setOpen(false)}>About</Link>
           <Link href="/services" className="text-gray-300 hover:text-[#F9D548]" onClick={() => setOpen(false)}>Services</Link>
+          <Link href="/team" className="text-gray-300 hover:text-[#F9D548]" onClick={() => setOpen(false)}>Team</Link>
           <Link href="/blog" className="text-gray-300 hover:text-[#F9D548]" onClick={() => setOpen(false)}>Blog</Link>
           <Link href="/agritrace" className="text-gray-300 hover:text-[#F9D548]" onClick={() => setOpen(false)}>AgriTrace</Link>
           <Link href="/contact" className="text-gray-300 hover:text-[#F9D548]" onClick={() => setOpen(false)}>Contact</Link>

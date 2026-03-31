@@ -10,26 +10,26 @@ export default function HomePage() {
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,_rgba(249,213,72,0.08)_0%,_transparent_60%)]" />
 
         <div className="relative z-10 max-w-7xl mx-auto px-6 pt-32 pb-32 text-center">
-          <h1 className="text-5xl md:text-7xl font-extrabold text-white leading-tight mb-6">
+          <h1 className="text-5xl md:text-7xl font-extrabold text-white leading-tight mb-6 animate-fadeInUp">
             Feeding Africa,<br />
             <span className="text-[#F9D548]">Cultivating Prosperity</span>
           </h1>
 
-          <p className="text-gray-400 text-lg md:text-xl max-w-2xl mx-auto mb-10 leading-relaxed">
+          <p className="text-gray-400 text-lg md:text-xl max-w-2xl mx-auto mb-10 leading-relaxed animate-fadeInUp animation-delay-100">
             Quantum Agro Light Farms bridges Nigerian farmers to global markets through
             IoT-enabled farming, commodity aggregation, and blockchain-backed traceability.
           </p>
 
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+          <div className="flex flex-col sm:flex-row gap-4 justify-center animate-fadeInUp animation-delay-200">
             <Link
               href="/services"
-              className="px-8 py-3.5 bg-[#F9D548] text-[#181A20] rounded font-bold hover:bg-yellow-300 transition-colors"
+              className="px-8 py-3.5 bg-[#F9D548] text-[#181A20] rounded font-bold hover:bg-yellow-300 transition-colors hover:shadow-lg hover:shadow-[#F9D548]/20 transform hover:scale-105 transition-transform"
             >
               Our Services
             </Link>
             <Link
               href="/agritrace"
-              className="px-8 py-3.5 border border-white/20 text-white rounded font-semibold hover:border-[#F9D548] hover:text-[#F9D548] transition-colors"
+              className="px-8 py-3.5 border border-white/20 text-white rounded font-semibold hover:border-[#F9D548] hover:text-[#F9D548] transition-colors hover:shadow-lg hover:shadow-[#F9D548]/10 transform hover:scale-105 transition-transform"
             >
               AgriTrace Portal
             </Link>
@@ -57,8 +57,8 @@ export default function HomePage() {
       {/* Services overview */}
       <section className="max-w-7xl mx-auto px-6 py-24">
         <div className="text-center mb-14">
-          <p className="text-[#F9D548] text-sm font-semibold tracking-widest uppercase mb-3">What We Do</p>
-          <h2 className="text-4xl font-extrabold text-white">Integrated Agribusiness</h2>
+          <p className="text-[#F9D548] text-sm font-semibold tracking-widest uppercase mb-3 animate-fadeInUp">What We Do</p>
+          <h2 className="text-4xl font-extrabold text-white animate-fadeInUp animation-delay-100">Integrated Agribusiness</h2>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
@@ -83,17 +83,21 @@ export default function HomePage() {
               title: 'Exports',
               desc: 'Sesame, dried ginger, hibiscus and more — connecting African farmers to global buyers.',
             },
-          ].map((s) => (
-            <div key={s.title} className="bg-[#1e2028] rounded-xl p-6 border border-white/10 hover:border-[#F9D548]/40 transition-colors">
-              <div className="text-3xl mb-4">{s.icon}</div>
-              <h3 className="font-bold text-white mb-2">{s.title}</h3>
+          ].map((s, i) => (
+            <div
+              key={s.title}
+              className="bg-gradient-to-br from-[#1e2028] to-[#181A20] rounded-xl p-6 border border-white/10 hover:border-[#F9D548]/60 transition-all duration-300 hover:shadow-xl hover:shadow-[#F9D548]/10 transform hover:-translate-y-1 hover:scale-105 animate-fadeInUp cursor-pointer group"
+              style={{ animationDelay: `${i * 100}ms` }}
+            >
+              <div className="text-4xl mb-4 transform group-hover:scale-125 transition-transform duration-300">{s.icon}</div>
+              <h3 className="font-bold text-white mb-2 group-hover:text-[#F9D548] transition-colors">{s.title}</h3>
               <p className="text-gray-400 text-sm leading-relaxed">{s.desc}</p>
             </div>
           ))}
         </div>
 
         <div className="text-center mt-10">
-          <Link href="/services" className="text-[#F9D548] text-sm font-semibold hover:underline">
+          <Link href="/services" className="text-[#F9D548] text-sm font-semibold hover:underline hover:text-yellow-300 transition-colors">
             View all services →
           </Link>
         </div>
