@@ -6,7 +6,7 @@ const executives = [
     name: 'Aniekan Anthony Nyong',
     role: 'Chief Executive Officer',
     bio: 'Visionary leader driving Quantum Agro Light Farms\' mission to revolutionize African agriculture through technology and innovation.',
-    image: '/aniekan.jpg',
+    image: '/Aniekan.png',
     socials: {
       linkedin: '#',
       twitter: '#',
@@ -16,49 +16,11 @@ const executives = [
     name: 'Zakariyya Jibril',
     role: 'Chief Operating Officer',
     bio: 'Operations expert ensuring seamless execution of our farm-to-market supply chain and blockchain infrastructure.',
-    image: '/zakariyya.jpg',
+    image: '/Zakariayya.png',
     socials: {
       linkedin: '#',
       twitter: '#',
     },
-  },
-]
-
-const teamMembers = [
-  {
-    name: 'Chioma Okafor',
-    role: 'CTO',
-    bio: 'Full-stack engineer leading blockchain & IoT integration for farm-to-fork traceability systems.',
-    image: '💻',
-    specialty: 'Technology',
-  },
-  {
-    name: 'Kwame Mensah',
-    role: 'Operations Director',
-    bio: 'Former supply chain manager optimizing commodity aggregation and export logistics.',
-    image: '📦',
-    specialty: 'Operations',
-  },
-  {
-    name: 'Amara Diallo',
-    role: 'Head of Partnerships',
-    bio: 'International trade specialist connecting African farmers to premium global markets.',
-    image: '🤝',
-    specialty: 'Partnerships',
-  },
-  {
-    name: 'Samuel Kipchoge',
-    role: 'Head of Farmer Relations',
-    bio: 'Community leader ensuring farmer success through training, support, and fair pricing.',
-    image: '🌾',
-    specialty: 'Community',
-  },
-  {
-    name: 'Grace Okonkwo',
-    role: 'Product Lead',
-    bio: 'Product strategist designing farmer-first solutions for USSD, mobile, and web platforms.',
-    image: '🎯',
-    specialty: 'Product',
   },
 ]
 
@@ -161,64 +123,8 @@ export default function TeamPage() {
         </div>
       </section>
 
-      {/* Extended Leadership Team */}
-      <section className="max-w-7xl mx-auto px-6 py-24">
-        <div className="text-center mb-14">
-          <p className="text-[#F9D548] text-sm font-semibold tracking-widest uppercase mb-3 animate-fadeInUp">
-            Our Team
-          </p>
-          <h2 className="text-4xl font-extrabold text-white animate-fadeInUp animation-delay-100">
-            Extended Leadership
-          </h2>
-        </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {teamMembers.map((member, i) => (
-            <div
-              key={member.name}
-              className="group relative animate-fadeInUp"
-              style={{ animationDelay: `${i * 80}ms` }}
-            >
-              {/* Card background */}
-              <div className="absolute inset-0 bg-gradient-to-br from-[#F9D548]/5 via-transparent to-[#1e2028] rounded-2xl border border-white/10 group-hover:border-[#F9D548]/60 transition-all duration-300 group-hover:shadow-2xl group-hover:shadow-[#F9D548]/20" />
-
-              {/* Card content */}
-              <div className="relative p-8 md:p-10 h-full flex flex-col">
-                {/* Avatar */}
-                <div className="text-6xl md:text-7xl mb-6 transform group-hover:scale-110 transition-transform duration-300">
-                  {member.image}
-                </div>
-
-                {/* Name & Role */}
-                <h3 className="text-2xl font-bold text-white mb-1 group-hover:text-[#F9D548] transition-colors">
-                  {member.name}
-                </h3>
-                <p className="text-[#F9D548] font-semibold text-sm mb-4 uppercase tracking-wide">
-                  {member.role}
-                </p>
-
-                {/* Bio */}
-                <p className="text-gray-400 text-sm leading-relaxed mb-6 flex-grow">
-                  {member.bio}
-                </p>
-
-                {/* Specialty Badge */}
-                <div className="inline-block">
-                  <span className="px-4 py-2 bg-[#F9D548]/10 border border-[#F9D548]/30 text-[#F9D548] text-xs font-semibold rounded-lg group-hover:bg-[#F9D548] group-hover:text-[#181A20] transition-colors duration-300">
-                    {member.specialty}
-                  </span>
-                </div>
-              </div>
-
-              {/* Hover accent line */}
-              <div className="absolute bottom-0 left-0 right-0 h-1 bg-gradient-to-r from-[#F9D548] to-transparent scale-x-0 group-hover:scale-x-100 transition-transform duration-300 rounded-full" />
-            </div>
-          ))}
-        </div>
-      </section>
-
       {/* Culture Section */}
-      <section className="max-w-7xl mx-auto px-6 py-24 border-t border-white/10">
+      <section className="max-w-7xl mx-auto px-6 py-24">
         <div className="text-center mb-16">
           <h2 className="text-4xl font-extrabold text-white mb-4 animate-fadeInUp">Our Culture & Values</h2>
           <p className="text-gray-400 text-lg max-w-2xl mx-auto animate-fadeInUp animation-delay-100">
