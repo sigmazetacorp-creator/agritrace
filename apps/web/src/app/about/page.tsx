@@ -86,13 +86,13 @@ export default function AboutPage() {
             },
           ].map((exec, i) => (
             <div key={exec.name} className="group">
-              <div className="relative mb-8 overflow-hidden rounded-xl border border-white/10 group-hover:border-[#F9D548]/40 transition-all duration-300">
-                <div className="relative w-full aspect-square bg-gradient-to-br from-[#1e2028] to-[#181A20]">
+              <div className="relative mb-8 overflow-hidden rounded-xl border border-white/10 group-hover:border-[#F9D548]/40 transition-all duration-300 mx-auto w-72">
+                <div className="relative w-full aspect-[2/3] bg-gradient-to-br from-[#1e2028] to-[#181A20]">
                   <Image
                     src={exec.image}
                     alt={exec.name}
                     fill
-                    className="object-cover group-hover:scale-105 transition-transform duration-500"
+                    className="object-contain group-hover:scale-105 transition-transform duration-500"
                   />
                 </div>
               </div>

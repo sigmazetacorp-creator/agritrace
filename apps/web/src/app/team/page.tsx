@@ -65,17 +65,17 @@ export default function TeamPage() {
           {executives.map((exec, i) => (
             <div
               key={exec.name}
-              className="group animate-fadeInUp"
+              className="group animate-fadeInUp flex flex-col items-center"
               style={{ animationDelay: `${i * 150}ms` }}
             >
               {/* Image Container */}
-              <div className="relative mb-8 overflow-hidden rounded-xl border border-white/10 group-hover:border-[#F9D548]/40 transition-all duration-300 shadow-2xl">
-                <div className="relative w-full aspect-square bg-gradient-to-br from-[#1e2028] to-[#181A20]">
+              <div className="relative mb-8 overflow-hidden rounded-xl border border-white/10 group-hover:border-[#F9D548]/40 transition-all duration-300 w-72">
+                <div className="relative w-full aspect-[2/3] bg-gradient-to-br from-[#1e2028] to-[#181A20]">
                   <Image
                     src={exec.image}
                     alt={exec.name}
                     fill
-                    className="object-cover group-hover:scale-105 transition-transform duration-500"
+                    className="object-contain group-hover:scale-105 transition-transform duration-500"
                     priority
                   />
                   {/* Overlay on hover */}
@@ -107,7 +107,7 @@ export default function TeamPage() {
               </div>
 
               {/* Info */}
-              <div>
+              <div className="text-center">
                 <h3 className="text-2xl font-bold text-white mb-1 group-hover:text-[#F9D548] transition-colors">
                   {exec.name}
                 </h3>
