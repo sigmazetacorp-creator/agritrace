@@ -62,6 +62,18 @@ export default function ServicesPage() {
               'Phytosanitary & export documentation',
             ],
           },
+          {
+            number: '05',
+            icon: '🔗',
+            title: 'AgriTrace — Blockchain-Powered Traceability',
+            desc: 'Every harvest logged via USSD from feature phones. Every record hashed on Polygon blockchain. Buyers verify authenticity with a single QR scan. Complete farm-to-fork transparency and immutability.',
+            bullets: [
+              'USSD farmer registration',
+              'Polygon blockchain recording',
+              'QR code verification',
+              'Immutable harvest records',
+            ],
+          },
         ].map((s) => (
           <div key={s.title} className="bg-[#1e2028] rounded-2xl border border-white/10 p-8 md:p-10 flex flex-col md:flex-row gap-8">
             <div className="shrink-0">
@@ -84,7 +96,54 @@ export default function ServicesPage() {
         ))}
       </section>
 
-      {/* CTA */}
+      {/* Services Gallery */}
+      <section className="max-w-7xl mx-auto px-6 py-24 border-t border-white/10">
+        <div className="text-center mb-16">
+          <h2 className="text-4xl font-extrabold text-white mb-4">Our Operations In Action</h2>
+          <p className="text-gray-400 max-w-xl mx-auto">
+            From farm fields to global markets — see how we transform African agriculture.
+          </p>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          {[
+            {
+              title: 'Farm Technology',
+              desc: 'IoT sensors and precision agriculture',
+              placeholder: '🌾',
+            },
+            {
+              title: 'Quality Control',
+              desc: 'Rigorous testing and grading',
+              placeholder: '✓',
+            },
+            {
+              title: 'Supply Chain',
+              desc: 'Cold storage and logistics',
+              placeholder: '📦',
+            },
+            {
+              title: 'Global Exports',
+              desc: 'Connected to world markets',
+              placeholder: '🌍',
+            },
+          ].map((item) => (
+            <div
+              key={item.title}
+              className="relative h-64 rounded-2xl border border-white/10 overflow-hidden group hover:border-[#F9D548]/40 transition-all duration-300"
+            >
+              <div className="absolute inset-0 bg-gradient-to-br from-[#1e2028] to-[#181A20] flex items-center justify-center">
+                <div className="text-center">
+                  <div className="text-7xl mb-4">{item.placeholder}</div>
+                  <h3 className="text-xl font-bold text-white mb-2">{item.title}</h3>
+                  <p className="text-gray-400 text-sm">{item.desc}</p>
+                </div>
+              </div>
+              <div className="absolute inset-0 bg-[#F9D548]/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+            </div>
+          ))}
+        </div>
+      </section>
       <section className="max-w-7xl mx-auto px-6 pb-24 text-center">
         <div className="bg-gradient-to-br from-[#F9D548]/10 to-[#1e2028] rounded-2xl border border-[#F9D548]/20 p-12">
           <h2 className="text-3xl font-extrabold text-white mb-4">Interested in working with us?</h2>

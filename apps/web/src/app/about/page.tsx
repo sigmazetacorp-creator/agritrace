@@ -1,3 +1,5 @@
+import Image from 'next/image'
+
 export default function AboutPage() {
   return (
     <div className="pt-24">
@@ -19,7 +21,7 @@ export default function AboutPage() {
             <h2 className="text-2xl font-bold text-white mb-4">Feeding Africa, Cultivating Prosperity</h2>
             <p className="text-gray-400 leading-relaxed">
               We exist to bridge the gap between smallholder farmers and global commodity markets —
-              providing technology, training, aggregation, and access to finance so that African agriculture
+              providing trade, technology, aggregation, and production so that African agriculture
               can compete on the world stage.
             </p>
           </div>
@@ -58,14 +60,54 @@ export default function AboutPage() {
         </div>
       </section>
 
-      {/* Team placeholder */}
-      <section className="max-w-7xl mx-auto px-6 pb-20 text-center">
-        <p className="text-[#F9D548] text-sm font-semibold tracking-widest uppercase mb-3">Our Team</p>
-        <h2 className="text-3xl font-extrabold text-white mb-4">Built by Agribusiness Professionals</h2>
-        <p className="text-gray-400 max-w-xl mx-auto">
-          Our team brings together expertise in agronomy, supply chain, technology, and finance —
-          united by a shared belief in Africa's agricultural potential.
-        </p>
+      {/* Executive Leadership */}
+      <section className="max-w-7xl mx-auto px-6 py-24">
+        <div className="text-center mb-16">
+          <p className="text-[#F9D548] text-sm font-semibold tracking-widest uppercase mb-3">Leadership</p>
+          <h2 className="text-4xl font-extrabold text-white mb-4">Meet Our Executives</h2>
+          <p className="text-gray-400 max-w-xl mx-auto">
+            Guided by visionary leadership committed to transforming agriculture across Africa.
+          </p>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-12 lg:gap-16">
+          {[
+            {
+              name: 'Aniekan Anthony Nyong',
+              role: 'Chief Executive Officer',
+              bio: 'Visionary leader driving Quantum Agro Light Farms\' mission to revolutionize African agriculture through technology and innovation.',
+              image: '/Aniekan.png',
+            },
+            {
+              name: 'Zakariyya Jibril',
+              role: 'Chief Operating Officer',
+              bio: 'Operations expert ensuring seamless execution of our farm-to-market supply chain and blockchain infrastructure.',
+              image: '/Zakariayya.png',
+            },
+          ].map((exec, i) => (
+            <div key={exec.name} className="group">
+              <div className="relative mb-8 overflow-hidden rounded-xl border border-white/10 group-hover:border-[#F9D548]/40 transition-all duration-300">
+                <div className="relative w-full aspect-square bg-gradient-to-br from-[#1e2028] to-[#181A20]">
+                  <Image
+                    src={exec.image}
+                    alt={exec.name}
+                    fill
+                    className="object-cover group-hover:scale-105 transition-transform duration-500"
+                  />
+                </div>
+              </div>
+              <h3 className="text-2xl font-bold text-white mb-1 group-hover:text-[#F9D548] transition-colors">
+                {exec.name}
+              </h3>
+              <p className="text-[#F9D548] text-sm font-semibold tracking-widest uppercase mb-3">
+                {exec.role}
+              </p>
+              <p className="text-gray-400 leading-relaxed">
+                {exec.bio}
+              </p>
+            </div>
+          ))}
+        </div>
       </section>
     </div>
   )

@@ -36,7 +36,7 @@ export default function ContactPage() {
                   <span className="text-xl">📍</span>
                   <div>
                     <p className="text-white font-medium">Operations</p>
-                    <p>Nigeria · Kenya · East Africa</p>
+                    <p>Nigeria · Africa</p>
                   </div>
                 </div>
               </div>
