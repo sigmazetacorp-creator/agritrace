@@ -15,8 +15,8 @@ export function Footer() {
             QLF — feeding Africa through sustainable agriculture, technology-enabled farming, and transparent supply chains.
           </p>
           <div className="flex gap-4 mt-5">
-            <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" className="text-gray-500 hover:text-[#F9D548] transition-colors text-sm">Instagram</a>
-            <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" className="text-gray-500 hover:text-[#F9D548] transition-colors text-sm">LinkedIn</a>
+            <a href="https://www.instagram.com/qlfgroup.ng/" target="_blank" rel="noopener noreferrer" className="text-gray-500 hover:text-[#F9D548] transition-colors text-sm">Instagram</a>
+            <a href="https://www.linkedin.com/company/qlfgroup" target="_blank" rel="noopener noreferrer" className="text-gray-500 hover:text-[#F9D548] transition-colors text-sm">LinkedIn</a>
           </div>
         </div>
 
@@ -28,6 +28,7 @@ export function Footer() {
             <Link href="/services" className="hover:text-[#F9D548] transition-colors">Services</Link>
             <Link href="/blog" className="hover:text-[#F9D548] transition-colors">Blog</Link>
             <Link href="/contact" className="hover:text-[#F9D548] transition-colors">Contact</Link>
+            <Link href="/privacy" className="hover:text-[#F9D548] transition-colors">Privacy Policy</Link>
           </div>
         </div>
 

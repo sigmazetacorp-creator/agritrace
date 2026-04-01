@@ -1,5 +1,160 @@
 'use client'
 
+import { useState } from 'react'
+
+function ContactForm() {
+  const [formData, setFormData] = useState({
+    name: '',
+    email: '',
+    subject: '',
+    message: '',
+  })
+  const [errors, setErrors] = useState({})
+  const [loading, setLoading] = useState(false)
+  const [status, setStatus] = useState(null)
+
+  const validateForm = () => {
+    const newErrors = {}
+
+    if (!formData.name.trim()) newErrors.name = 'Name is required'
+    if (!formData.email.trim()) newErrors.email = 'Email is required'
+    else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
+      newErrors.email = 'Email is invalid'
+    }
+    if (!formData.subject) newErrors.subject = 'Subject is required'
+    if (!formData.message.trim()) newErrors.message = 'Message is required'
+
+    return newErrors
+  }
+
+  const handleChange = (e) => {
+    const { name, value } = e.target
+    setFormData(prev => ({ ...prev, [name]: value }))
+    if (errors[name]) {
+      setErrors(prev => ({ ...prev, [name]: '' }))
+    }
+  }
+
+  const handleSubmit = async (e) => {
+    e.preventDefault()
+
+    const newErrors = validateForm()
+    if (Object.keys(newErrors).length > 0) {
+      setErrors(newErrors)
+      return
+    }
+
+    setLoading(true)
+    setStatus(null)
+
+    try {
+      const response = await fetch('/api/contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(formData),
+      })
+
+      if (response.ok) {
+        setStatus({ type: 'success', message: 'Message sent successfully! We\'ll get back to you soon.' })
+        setFormData({ name: '', email: '', subject: '', message: '' })
+      } else {
+        setStatus({ type: 'error', message: 'Failed to send message. Please try again.' })
+      }
+    } catch (error) {
+      setStatus({ type: 'error', message: 'Error sending message. Please try again.' })
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  return (
+    <form className="space-y-4" onSubmit={handleSubmit}>
+      {status && (
+        <div className={`p-3 rounded text-sm ${
+          status.type === 'success'
+            ? 'bg-green-900/30 border border-green-600 text-green-100'
+            : 'bg-red-900/30 border border-red-600 text-red-100'
+        }`}>
+          {status.message}
+        </div>
+      )}
+
+      <div>
+        <label className="block text-xs text-gray-400 mb-1.5">Full Name *</label>
+        <input
+          type="text"
+          name="name"
+          value={formData.name}
+          onChange={handleChange}
+          placeholder="Your name"
+          className={`w-full bg-[#181A20] border rounded px-4 py-2.5 text-sm text-white placeholder-gray-600 focus:outline-none transition-colors ${
+            errors.name ? 'border-red-500/50' : 'border-white/10 focus:border-[#F9D548]/50'
+          }`}
+        />
+        {errors.name && <p className="text-red-400 text-xs mt-1">{errors.name}</p>}
+      </div>
+
+      <div>
+        <label className="block text-xs text-gray-400 mb-1.5">Email *</label>
+        <input
+          type="email"
+          name="email"
+          value={formData.email}
+          onChange={handleChange}
+          placeholder="you@company.com"
+          className={`w-full bg-[#181A20] border rounded px-4 py-2.5 text-sm text-white placeholder-gray-600 focus:outline-none transition-colors ${
+            errors.email ? 'border-red-500/50' : 'border-white/10 focus:border-[#F9D548]/50'
+          }`}
+        />
+        {errors.email && <p className="text-red-400 text-xs mt-1">{errors.email}</p>}
+      </div>
+
+      <div>
+        <label className="block text-xs text-gray-400 mb-1.5">Subject *</label>
+        <select
+          name="subject"
+          value={formData.subject}
+          onChange={handleChange}
+          className={`w-full bg-[#181A20] border rounded px-4 py-2.5 text-sm text-white focus:outline-none transition-colors ${
+            errors.subject ? 'border-red-500/50' : 'border-white/10 focus:border-[#F9D548]/50'
+          }`}
+        >
+          <option value="">Select a topic</option>
+          <option value="Export Inquiry">Export Inquiry</option>
+          <option value="Partnership">Partnership</option>
+          <option value="Farmer Registration">Farmer Registration</option>
+          <option value="AgriTrace">AgriTrace</option>
+          <option value="Other">Other</option>
+        </select>
+        {errors.subject && <p className="text-red-400 text-xs mt-1">{errors.subject}</p>}
+      </div>
+
+      <div>
+        <label className="block text-xs text-gray-400 mb-1.5">Message *</label>
+        <textarea
+          name="message"
+          value={formData.message}
+          onChange={handleChange}
+          rows={4}
+          placeholder="Tell us how we can help..."
+          className={`w-full bg-[#181A20] border rounded px-4 py-2.5 text-sm text-white placeholder-gray-600 focus:outline-none resize-none transition-colors ${
+            errors.message ? 'border-red-500/50' : 'border-white/10 focus:border-[#F9D548]/50'
+          }`}
+        />
+        {errors.message && <p className="text-red-400 text-xs mt-1">{errors.message}</p>}
+      </div>
+
+      <button
+        type="submit"
+        disabled={loading}
+        className="w-full py-3 bg-[#F9D548] text-[#181A20] rounded font-bold hover:bg-yellow-300 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+      >
+        {loading ? 'Sending...' : 'Send Message'}
+      </button>
+    </form>
+  )
+}
+
 export default function ContactPage() {
   return (
     <div className="pt-24">
@@ -55,49 +210,7 @@ export default function ContactPage() {
           {/* Contact form */}
           <div className="bg-[#1e2028] rounded-2xl border border-white/10 p-8">
             <p className="font-bold text-white text-lg mb-6">Send us a message</p>
-            <form className="space-y-4" onSubmit={(e) => e.preventDefault()}>
-              <div>
-                <label className="block text-xs text-gray-400 mb-1.5">Full Name</label>
-                <input
-                  type="text"
-                  placeholder="Your name"
-                  className="w-full bg-[#181A20] border border-white/10 rounded px-4 py-2.5 text-sm text-white placeholder-gray-600 focus:outline-none focus:border-[#F9D548]/50"
-                />
-              </div>
-              <div>
-                <label className="block text-xs text-gray-400 mb-1.5">Email</label>
-                <input
-                  type="email"
-                  placeholder="you@company.com"
-                  className="w-full bg-[#181A20] border border-white/10 rounded px-4 py-2.5 text-sm text-white placeholder-gray-600 focus:outline-none focus:border-[#F9D548]/50"
-                />
-              </div>
-              <div>
-                <label className="block text-xs text-gray-400 mb-1.5">Subject</label>
-                <select className="w-full bg-[#181A20] border border-white/10 rounded px-4 py-2.5 text-sm text-white focus:outline-none focus:border-[#F9D548]/50">
-                  <option value="">Select a topic</option>
-                  <option>Export Inquiry</option>
-                  <option>Partnership</option>
-                  <option>Farmer Registration</option>
-                  <option>AgriTrace</option>
-                  <option>Other</option>
-                </select>
-              </div>
-              <div>
-                <label className="block text-xs text-gray-400 mb-1.5">Message</label>
-                <textarea
-                  rows={4}
-                  placeholder="Tell us how we can help..."
-                  className="w-full bg-[#181A20] border border-white/10 rounded px-4 py-2.5 text-sm text-white placeholder-gray-600 focus:outline-none focus:border-[#F9D548]/50 resize-none"
-                />
-              </div>
-              <button
-                type="submit"
-                className="w-full py-3 bg-[#F9D548] text-[#181A20] rounded font-bold hover:bg-yellow-300 transition-colors"
-              >
-                Send Message
-              </button>
-            </form>
+            <ContactForm />
           </div>
         </div>
       </section>

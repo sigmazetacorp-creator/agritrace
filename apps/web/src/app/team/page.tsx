@@ -8,7 +8,7 @@ const executives = [
     bio: 'Visionary leader driving Quantum Agro Light Farms\' mission to revolutionize African agriculture through technology and innovation.',
     image: '/Aniekan.png',
     socials: {
-      linkedin: '#',
+      linkedin: 'https://www.linkedin.com/in/aniekan-nyong/',
       twitter: '#',
     },
   },
@@ -18,7 +18,7 @@ const executives = [
     bio: 'Operations expert ensuring seamless execution of our farm-to-market supply chain and blockchain infrastructure.',
     image: '/Zakariayya.png',
     socials: {
-      linkedin: '#',
+      linkedin: 'https://www.linkedin.com/in/zakariyya-jibril-97012b149/',
       twitter: '#',
     },
   },
@@ -164,25 +164,18 @@ export default function TeamPage() {
       </section>
 
       {/* CTA */}
-      <section className="max-w-7xl mx-auto px-6 pb-24 text-center">
-        <div className="mb-8">
-          <h2 className="text-4xl font-extrabold text-white mb-4 animate-fadeInUp">Ready to Join Our Mission?</h2>
-          <p className="text-gray-400 text-lg mb-8 max-w-2xl mx-auto animate-fadeInUp animation-delay-100">
-            We're hiring passionate innovators, engineers, and operators to scale agricultural impact across Africa. Let's build the future of farming together.
-          </p>
-        </div>
-        <div className="flex flex-col sm:flex-row gap-4 justify-center animate-fadeInUp animation-delay-200">
-          <Link
+      <section className="max-w-7xl mx-auto px-6 pb-24">
+        <p className="text-[#F9D548] text-sm font-semibold tracking-widest uppercase mb-3 text-center">Connect With Us</p>
+        <h2 className="text-3xl font-extrabold text-white mb-4 text-center">Learn More About QLF</h2>
+        <p className="text-gray-400 text-lg mb-8 max-w-2xl mx-auto text-center">
+          Interested in partnerships, exports, or farmer cooperation? Reach out to our team.
+        </p>
+        <div className="flex flex-col sm:flex-row gap-4 justify-center">
+          <a
             href="/contact"
-            className="px-8 py-3.5 bg-[#F9D548] text-[#181A20] rounded font-bold hover:bg-yellow-300 transition-all hover:shadow-lg hover:shadow-[#F9D548]/20 transform hover:scale-105"
+            className="inline-block px-8 py-3.5 bg-[#F9D548] text-[#181A20] rounded font-bold hover:bg-yellow-300 transition-colors text-center"
           >
             Get In Touch
-          </Link>
-          <a
-            href="mailto:careers@qlf.com"
-            className="px-8 py-3.5 border border-white/20 text-white rounded font-semibold hover:border-[#F9D548] hover:text-[#F9D548] transition-colors hover:shadow-lg hover:shadow-[#F9D548]/10"
-          >
-            View Opportunities
           </a>
         </div>
       </section>

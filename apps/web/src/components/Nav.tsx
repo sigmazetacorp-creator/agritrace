@@ -2,10 +2,37 @@
 
 import Link from 'next/link'
 import Image from 'next/image'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
+import { useRouter } from 'next/navigation'
 
 export function Nav() {
   const [open, setOpen] = useState(false)
+  const [user, setUser] = useState(null)
+  const router = useRouter()
+
+  useEffect(() => {
+    // Check if user is authenticated
+    const checkSession = async () => {
+      try {
+        const response = await fetch('/api/auth/session')
+        if (response.ok) {
+          const data = await response.json()
+          setUser(data.user)
+        }
+      } catch (error) {
+        // Not authenticated
+      }
+    }
+
+    checkSession()
+  }, [])
+
+  const handleLogout = async () => {
+    await fetch('/api/auth/logout', { method: 'POST' })
+    setUser(null)
+    router.push('/')
+    setOpen(false)
+  }
 
   return (
     <nav className="fixed top-0 left-0 right-0 z-50 bg-[#181A20]/95 backdrop-blur border-b border-white/10">
@@ -30,6 +57,24 @@ export function Nav() {
           >
             Verify Harvest
           </Link>
+          {user ? (
+            <div className="flex items-center gap-3 pl-3 border-l border-white/10">
+              <span className="text-xs text-gray-400">{user.name}</span>
+              <button
+                onClick={handleLogout}
+                className="px-3 py-1.5 text-xs border border-gray-400 text-gray-400 rounded hover:border-red-500 hover:text-red-500 transition-colors"
+              >
+                Logout
+              </button>
+            </div>
+          ) : (
+            <Link
+              href="/login"
+              className="px-4 py-2 text-[#F9D548] rounded font-semibold hover:text-yellow-300 transition-colors text-xs border border-[#F9D548] hover:border-yellow-300"
+            >
+              Login
+            </Link>
+          )}
         </div>
 
         {/* Mobile menu button */}
@@ -57,6 +102,21 @@ export function Nav() {
           <Link href="/agritrace" className="text-gray-300 hover:text-[#F9D548]" onClick={() => setOpen(false)}>AgriTrace</Link>
           <Link href="/contact" className="text-gray-300 hover:text-[#F9D548]" onClick={() => setOpen(false)}>Contact</Link>
           <Link href="/agritrace/verify" className="text-[#F9D548] font-semibold" onClick={() => setOpen(false)}>Verify Harvest</Link>
+          {user ? (
+            <>
+              <div className="border-t border-white/10 py-2 text-gray-400 text-xs">
+                Signed in as: {user.name}
+              </div>
+              <button
+                onClick={handleLogout}
+                className="px-3 py-1.5 text-xs border border-red-500 text-red-500 rounded hover:bg-red-500/10 transition-colors text-left"
+              >
+                Logout
+              </button>
+            </>
+          ) : (
+            <Link href="/login" className="text-[#F9D548] font-semibold" onClick={() => setOpen(false)}>Login</Link>
+          )}
         </div>
       )}
     </nav>
