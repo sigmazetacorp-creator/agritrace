@@ -9,12 +9,12 @@ function ContactForm() {
     subject: '',
     message: '',
   })
-  const [errors, setErrors] = useState({})
+  const [errors, setErrors] = useState<{ [key: string]: string }>({})
   const [loading, setLoading] = useState(false)
   const [status, setStatus] = useState(null)
 
   const validateForm = () => {
-    const newErrors = {}
+    const newErrors: { [key: string]: string } = {}
 
     if (!formData.name.trim()) newErrors.name = 'Name is required'
     if (!formData.email.trim()) newErrors.email = 'Email is required'
