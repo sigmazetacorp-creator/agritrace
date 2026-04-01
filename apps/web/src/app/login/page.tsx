@@ -7,11 +7,11 @@ import Link from 'next/link'
 export default function LoginPage() {
   const router = useRouter()
   const [credentials, setCredentials] = useState({ email: '', password: '' })
-  const [errors, setErrors] = useState({})
+  const [errors, setErrors] = useState<{ [key: string]: string }>({})
   const [loading, setLoading] = useState(false)
   const [message, setMessage] = useState(null)
 
-  const handleChange = (e) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target
     setCredentials(prev => ({ ...prev, [name]: value }))
     if (errors[name]) {
@@ -19,9 +19,9 @@ export default function LoginPage() {
     }
   }
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    const newErrors = {}
+    const newErrors: { [key: string]: string } = {}
 
     if (!credentials.email.trim()) newErrors.email = 'Email is required'
     else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(credentials.email)) {
