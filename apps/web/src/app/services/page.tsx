@@ -12,7 +12,7 @@ export default function ServicesPage() {
           className="object-cover"
           priority
         />
-        <div className="absolute inset-0 bg-gradient-to-br from-[#181A20]/70 via-[#1e2410]/60 to-[#181A20]/70" />
+        <div className="absolute inset-0 bg-gradient-to-b from-[#181A20]/50 via-[#181A20]/80 to-[#181A20]/60" />
 
         <div className="relative z-10 max-w-4xl mx-auto px-6 py-16 text-center">
           <h1 className="text-5xl md:text-6xl font-extrabold text-white leading-tight mb-4">

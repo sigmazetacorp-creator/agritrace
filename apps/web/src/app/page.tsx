@@ -6,8 +6,14 @@ export default function HomePage() {
     <div>
       {/* Hero */}
       <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
-        {/* Background gradient */}
-        <div className="absolute inset-0 bg-gradient-to-br from-[#181A20] via-[#1e2410] to-[#181A20]" />
+        <Image
+          src="/hero-home.jpg"
+          alt="AgriTrace hero"
+          fill
+          className="object-cover"
+          priority
+        />
+        <div className="absolute inset-0 bg-gradient-to-b from-[#181A20]/50 via-[#181A20]/80 to-[#181A20]/60" />
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,_rgba(249,213,72,0.08)_0%,_transparent_60%)]" />
 
         <div className="relative z-10 max-w-7xl mx-auto px-6 pt-32 pb-32 text-center">
