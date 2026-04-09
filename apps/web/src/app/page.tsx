@@ -1,4 +1,5 @@
 import Link from 'next/link'
+import Image from 'next/image'
 
 export default function HomePage() {
   return (
@@ -106,6 +107,12 @@ export default function HomePage() {
       {/* AgriTrace CTA */}
       <section className="max-w-7xl mx-auto px-6 pb-24">
         <div className="relative rounded-2xl overflow-hidden bg-gradient-to-br from-[#F9D548]/10 to-[#1e2028] border border-[#F9D548]/20 p-10 md:p-16">
+          <Image
+            src="/Pattern 1 - Global Connection Theme.png"
+            alt="Pattern"
+            fill
+            className="absolute inset-0 object-cover opacity-20"
+          />
           <div className="absolute top-0 right-0 w-64 h-64 bg-[#F9D548]/5 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2" />
           <div className="relative z-10 flex flex-col md:flex-row items-start md:items-center justify-between gap-8">
             <div>

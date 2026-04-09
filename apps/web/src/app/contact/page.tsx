@@ -1,6 +1,7 @@
 'use client'
 
 import { useState } from 'react'
+import Image from 'next/image'
 
 function ContactForm() {
   const [formData, setFormData] = useState({
@@ -157,15 +158,29 @@ function ContactForm() {
 
 export default function ContactPage() {
   return (
-    <div className="pt-24">
-      <section className="max-w-7xl mx-auto px-6 py-20">
-        <div className="text-center mb-14">
-          <p className="text-[#F9D548] text-sm font-semibold tracking-widest uppercase mb-4">Get In Touch</p>
-          <h1 className="text-5xl font-extrabold text-white mb-6">Contact Quantum Agro Light Farms</h1>
-          <p className="text-gray-400 text-lg max-w-xl mx-auto">
+    <div>
+      {/* Hero */}
+      <section className="relative min-h-96 flex items-center justify-center overflow-hidden pt-24">
+        <Image
+          src="/hero-contact.png"
+          alt="Contact header"
+          fill
+          className="object-cover"
+          priority
+        />
+        <div className="absolute inset-0 bg-gradient-to-br from-[#181A20]/70 via-[#1e2410]/60 to-[#181A20]/70" />
+
+        <div className="relative z-10 max-w-4xl mx-auto px-6 py-16 text-center">
+          <h1 className="text-5xl md:text-6xl font-extrabold text-white leading-tight mb-4">
+            Get In Touch
+          </h1>
+          <p className="text-gray-400 text-lg max-w-2xl mx-auto">
             Reach out for export inquiries, partnership opportunities, or farmer cooperative registration.
           </p>
         </div>
+      </section>
+
+      <section className="max-w-7xl mx-auto px-6 py-20">
 
         <div className="grid md:grid-cols-2 gap-12 max-w-5xl mx-auto">
           {/* Contact info */}

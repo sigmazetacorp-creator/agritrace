@@ -1,23 +1,37 @@
+import Image from 'next/image'
+
 export default function ServicesPage() {
   return (
-    <div className="pt-24">
-      {/* Header */}
-      <section className="max-w-7xl mx-auto px-6 py-20 text-center">
-        <p className="text-[#F9D548] text-sm font-semibold tracking-widest uppercase mb-4">What We Offer</p>
-        <h1 className="text-5xl font-extrabold text-white mb-6">Our Services</h1>
-        <p className="text-gray-400 text-lg max-w-2xl mx-auto leading-relaxed">
-          From seed to shipment, QLF Group provides integrated agribusiness services across
-          the entire agricultural value chain.
-        </p>
+    <div>
+      {/* Hero */}
+      <section className="relative min-h-96 flex items-center justify-center overflow-hidden pt-24">
+        <Image
+          src="/hero-services.png"
+          alt="Services header"
+          fill
+          className="object-cover"
+          priority
+        />
+        <div className="absolute inset-0 bg-gradient-to-br from-[#181A20]/70 via-[#1e2410]/60 to-[#181A20]/70" />
+
+        <div className="relative z-10 max-w-4xl mx-auto px-6 py-16 text-center">
+          <h1 className="text-5xl md:text-6xl font-extrabold text-white leading-tight mb-4">
+            Our Services
+          </h1>
+          <p className="text-gray-400 text-lg max-w-2xl mx-auto">
+            From seed to shipment, QLF Group provides integrated agribusiness services across
+            the entire agricultural value chain.
+          </p>
+        </div>
       </section>
 
-      {/* Services */}
-      <section className="max-w-7xl mx-auto px-6 pb-20 space-y-8">
-        {[
-          {
-            number: '01',
-            icon: '🌱',
-            title: 'Primary Production',
+      <section className="pt-0">
+        <div className="max-w-7xl mx-auto px-6 pb-20 space-y-8">
+          {[
+            {
+              number: '01',
+              icon: '🌱',
+              title: 'Primary Production',
             desc: 'We operate and support IoT-enabled farms with precision agriculture techniques — drip irrigation, soil sensors, mechanized planting and harvesting — to maximise yield and reduce waste.',
             bullets: [
               'IoT soil and weather monitoring',
@@ -94,6 +108,7 @@ export default function ServicesPage() {
             </div>
           </div>
         ))}
+        </div>
       </section>
 
       {/* Services Gallery */}
@@ -110,33 +125,38 @@ export default function ServicesPage() {
             {
               title: 'Farm Technology',
               desc: 'IoT sensors and precision agriculture',
-              placeholder: '🌾',
+              image: '/service-iot-farm.png',
             },
             {
               title: 'Quality Control',
               desc: 'Rigorous testing and grading',
-              placeholder: '✓',
+              image: '/service-quality-check.png',
             },
             {
               title: 'Supply Chain',
               desc: 'Cold storage and logistics',
-              placeholder: '📦',
+              image: '/service-supply-chain.png',
             },
             {
               title: 'Global Exports',
               desc: 'Connected to world markets',
-              placeholder: '🌍',
+              image: '/service-global-export.png',
             },
           ].map((item) => (
             <div
               key={item.title}
               className="relative h-64 rounded-2xl border border-white/10 overflow-hidden group hover:border-[#F9D548]/40 transition-all duration-300"
             >
-              <div className="absolute inset-0 bg-gradient-to-br from-[#1e2028] to-[#181A20] flex items-center justify-center">
-                <div className="text-center">
-                  <div className="text-7xl mb-4">{item.placeholder}</div>
-                  <h3 className="text-xl font-bold text-white mb-2">{item.title}</h3>
-                  <p className="text-gray-400 text-sm">{item.desc}</p>
+              <Image
+                src={item.image}
+                alt={item.title}
+                fill
+                className="object-cover group-hover:scale-110 transition-transform duration-300"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-[#181A20]/80 via-[#181A20]/40 to-transparent flex items-end p-6">
+                <div>
+                  <h3 className="text-xl font-bold text-white mb-1">{item.title}</h3>
+                  <p className="text-gray-300 text-sm">{item.desc}</p>
                 </div>
               </div>
               <div className="absolute inset-0 bg-[#F9D548]/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />

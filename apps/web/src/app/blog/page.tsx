@@ -1,6 +1,7 @@
 'use client'
 
 import Link from 'next/link'
+import Image from 'next/image'
 import { getAllBlogPosts } from '@/lib/blog'
 
 export default function BlogPage() {
@@ -9,7 +10,15 @@ export default function BlogPage() {
   return (
     <div>
       {/* Hero */}
-      <section className="relative min-h-96 flex items-center justify-center overflow-hidden bg-gradient-to-br from-[#181A20] via-[#1e2410] to-[#181A20]">
+      <section className="relative min-h-96 flex items-center justify-center overflow-hidden">
+        <Image
+          src="/hero-blog.png"
+          alt="Blog header"
+          fill
+          className="object-cover"
+          priority
+        />
+        <div className="absolute inset-0 bg-gradient-to-br from-[#181A20]/70 via-[#1e2410]/60 to-[#181A20]/70" />
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,_rgba(249,213,72,0.08)_0%,_transparent_60%)]" />
 
         <div className="relative z-10 max-w-4xl mx-auto px-6 py-24 text-center">
