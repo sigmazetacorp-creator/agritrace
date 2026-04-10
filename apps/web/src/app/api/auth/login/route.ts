@@ -1,27 +1,21 @@
 import { NextRequest, NextResponse } from 'next/server'
-import * as fs from 'fs'
-import * as path from 'path'
 import bcrypt from 'bcryptjs'
 
-// Mock admin user data (with hashed passwords)
+// Mock admin user data
 const ADMIN_USERS = [
   { email: 'aniekan@qlfgroup.ng', password: 'setMeSecure123!', role: 'admin', name: 'Aniekan Anthony Nyong' },
   { email: 'zakariyya@qlfgroup.ng', password: 'setMeSecure456!', role: 'admin', name: 'Zakariyya Jibril' },
 ]
 
-// Path to users storage file
-const USERS_FILE = path.join(process.cwd(), 'apps', 'web', '.data', 'users.json')
+// In-memory user storage (synchronizes with signup)
+let registeredUsers: any[] = []
 
-// Get registered users
-function getRegisteredUsers() {
+// Load from environment if available
+if (process.env.REGISTERED_USERS) {
   try {
-    if (!fs.existsSync(USERS_FILE)) {
-      return []
-    }
-    const data = fs.readFileSync(USERS_FILE, 'utf-8')
-    return JSON.parse(data)
-  } catch {
-    return []
+    registeredUsers = JSON.parse(process.env.REGISTERED_USERS)
+  } catch (e) {
+    registeredUsers = []
   }
 }
 
@@ -37,7 +31,7 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    // Check admin users first (plaintext comparison for demo accounts)
+    // Check admin users first
     const adminUser = ADMIN_USERS.find(u => u.email === email && u.password === password)
 
     let user: any = null
@@ -50,7 +44,6 @@ export async function POST(request: NextRequest) {
       }
     } else {
       // Check registered users (hashed password comparison)
-      const registeredUsers = getRegisteredUsers()
       const registeredUserFound = registeredUsers.find((u: any) => u.email === email)
 
       if (registeredUserFound) {

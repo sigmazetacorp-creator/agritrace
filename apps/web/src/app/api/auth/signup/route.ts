@@ -1,38 +1,16 @@
 import { NextRequest, NextResponse } from 'next/server'
-import * as fs from 'fs'
-import * as path from 'path'
 import bcrypt from 'bcryptjs'
 
-// Path to users storage file
-const USERS_FILE = path.join(process.cwd(), 'apps', 'web', '.data', 'users.json')
+// In-memory user storage (temporary - should be replaced with database)
+let registeredUsers: any[] = []
 
-// Ensure directory exists
-function ensureDataDirectory() {
-  const dir = path.dirname(USERS_FILE)
-  if (!fs.existsSync(dir)) {
-    fs.mkdirSync(dir, { recursive: true })
-  }
-}
-
-// Get all registered users
-function getRegisteredUsers() {
+// For development: load from environment if available
+if (process.env.REGISTERED_USERS) {
   try {
-    ensureDataDirectory()
-    if (!fs.existsSync(USERS_FILE)) {
-      fs.writeFileSync(USERS_FILE, JSON.stringify([], null, 2))
-      return []
-    }
-    const data = fs.readFileSync(USERS_FILE, 'utf-8')
-    return JSON.parse(data)
-  } catch {
-    return []
+    registeredUsers = JSON.parse(process.env.REGISTERED_USERS)
+  } catch (e) {
+    registeredUsers = []
   }
-}
-
-// Save users to file
-function saveUsers(users: any[]) {
-  ensureDataDirectory()
-  fs.writeFileSync(USERS_FILE, JSON.stringify(users, null, 2))
 }
 
 export async function POST(request: NextRequest) {
@@ -77,9 +55,6 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    // Get registered users
-    const registeredUsers = getRegisteredUsers()
-
     // Check if email already exists
     if (registeredUsers.some((u: any) => u.email === email)) {
       return NextResponse.json(
@@ -101,9 +76,11 @@ export async function POST(request: NextRequest) {
       createdAt: new Date().toISOString(),
     }
 
-    // Save user
+    // Store user in memory
     registeredUsers.push(newUser)
-    saveUsers(registeredUsers)
+
+    // Update environment variable (for persistence across restarts in dev)
+    process.env.REGISTERED_USERS = JSON.stringify(registeredUsers)
 
     return NextResponse.json(
       { success: true, message: 'Account created successfully' },
@@ -112,7 +89,7 @@ export async function POST(request: NextRequest) {
   } catch (error) {
     console.error('Signup error:', error)
     return NextResponse.json(
-      { error: 'Sign up failed' },
+      { error: 'Sign up failed. Please try again.' },
       { status: 500 }
     )
   }
