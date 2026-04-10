@@ -1,10 +1,28 @@
 import { NextRequest, NextResponse } from 'next/server'
+import * as fs from 'fs'
+import * as path from 'path'
 
-// Mock user data - in production, query database
-const VALID_USERS = [
+// Mock admin user data
+const ADMIN_USERS = [
   { email: 'aniekan@qlfgroup.ng', password: 'setMeSecure123!', role: 'admin', name: 'Aniekan Anthony Nyong' },
   { email: 'zakariyya@qlfgroup.ng', password: 'setMeSecure456!', role: 'admin', name: 'Zakariyya Jibril' },
 ]
+
+// Path to users storage file
+const USERS_FILE = path.join(process.cwd(), 'apps', 'web', '.data', 'users.json')
+
+// Get registered users
+function getRegisteredUsers() {
+  try {
+    if (!fs.existsSync(USERS_FILE)) {
+      return []
+    }
+    const data = fs.readFileSync(USERS_FILE, 'utf-8')
+    return JSON.parse(data)
+  } catch {
+    return []
+  }
+}
 
 export async function POST(request: NextRequest) {
   try {
@@ -18,8 +36,30 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    // Find user
-    const user = VALID_USERS.find(u => u.email === email && u.password === password)
+    // Check admin users first
+    const adminUser = ADMIN_USERS.find(u => u.email === email && u.password === password)
+
+    let user: any = null
+
+    if (adminUser) {
+      user = {
+        email: adminUser.email,
+        name: adminUser.name,
+        role: adminUser.role,
+      }
+    } else {
+      // Check registered users
+      const registeredUsers = getRegisteredUsers()
+      const registeredUser = registeredUsers.find((u: any) => u.email === email && u.password === password)
+
+      if (registeredUser) {
+        user = {
+          email: registeredUser.email,
+          name: registeredUser.name,
+          role: 'user',
+        }
+      }
+    }
 
     if (!user) {
       return NextResponse.json(
