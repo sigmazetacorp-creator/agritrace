@@ -1,8 +1,9 @@
 import { NextRequest, NextResponse } from 'next/server'
 import * as fs from 'fs'
 import * as path from 'path'
+import bcrypt from 'bcryptjs'
 
-// Mock admin user data
+// Mock admin user data (with hashed passwords)
 const ADMIN_USERS = [
   { email: 'aniekan@qlfgroup.ng', password: 'setMeSecure123!', role: 'admin', name: 'Aniekan Anthony Nyong' },
   { email: 'zakariyya@qlfgroup.ng', password: 'setMeSecure456!', role: 'admin', name: 'Zakariyya Jibril' },
@@ -36,7 +37,7 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    // Check admin users first
+    // Check admin users first (plaintext comparison for demo accounts)
     const adminUser = ADMIN_USERS.find(u => u.email === email && u.password === password)
 
     let user: any = null
@@ -48,15 +49,20 @@ export async function POST(request: NextRequest) {
         role: adminUser.role,
       }
     } else {
-      // Check registered users
+      // Check registered users (hashed password comparison)
       const registeredUsers = getRegisteredUsers()
-      const registeredUser = registeredUsers.find((u: any) => u.email === email && u.password === password)
+      const registeredUserFound = registeredUsers.find((u: any) => u.email === email)
 
-      if (registeredUser) {
-        user = {
-          email: registeredUser.email,
-          name: registeredUser.name,
-          role: 'user',
+      if (registeredUserFound) {
+        // Compare password with hash
+        const passwordMatch = await bcrypt.compare(password, registeredUserFound.password)
+
+        if (passwordMatch) {
+          user = {
+            email: registeredUserFound.email,
+            name: registeredUserFound.name,
+            role: 'user',
+          }
         }
       }
     }
@@ -89,6 +95,7 @@ export async function POST(request: NextRequest) {
 
     return response
   } catch (error) {
+    console.error('Login error:', error)
     return NextResponse.json(
       { error: 'Login failed' },
       { status: 500 }

@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import * as fs from 'fs'
 import * as path from 'path'
+import bcrypt from 'bcryptjs'
 
 // Path to users storage file
 const USERS_FILE = path.join(process.cwd(), 'apps', 'web', '.data', 'users.json')
@@ -87,12 +88,15 @@ export async function POST(request: NextRequest) {
       )
     }
 
+    // Hash password
+    const hashedPassword = await bcrypt.hash(password, 10)
+
     // Create new user
     const newUser = {
       id: Date.now().toString(),
       name,
       email,
-      password, // In production, hash this!
+      password: hashedPassword, // Store hashed password
       userType,
       createdAt: new Date().toISOString(),
     }
