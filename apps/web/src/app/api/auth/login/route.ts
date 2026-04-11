@@ -1,23 +1,12 @@
 import { NextRequest, NextResponse } from 'next/server'
 import bcrypt from 'bcryptjs'
+import { getRegisteredUsers } from '@/lib/userStore'
 
 // Mock admin user data
 const ADMIN_USERS = [
   { email: 'aniekan@qlfgroup.ng', password: 'setMeSecure123!', role: 'admin', name: 'Aniekan Anthony Nyong' },
   { email: 'zakariyya@qlfgroup.ng', password: 'setMeSecure456!', role: 'admin', name: 'Zakariyya Jibril' },
 ]
-
-// In-memory user storage (synchronizes with signup)
-let registeredUsers: any[] = []
-
-// Load from environment if available
-if (process.env.REGISTERED_USERS) {
-  try {
-    registeredUsers = JSON.parse(process.env.REGISTERED_USERS)
-  } catch (e) {
-    registeredUsers = []
-  }
-}
 
 export async function POST(request: NextRequest) {
   try {
@@ -44,6 +33,7 @@ export async function POST(request: NextRequest) {
       }
     } else {
       // Check registered users (hashed password comparison)
+      const registeredUsers = getRegisteredUsers()
       const registeredUserFound = registeredUsers.find((u: any) => u.email === email)
 
       if (registeredUserFound) {
