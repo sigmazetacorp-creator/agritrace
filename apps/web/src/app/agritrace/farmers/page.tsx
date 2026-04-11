@@ -21,11 +21,22 @@ export default function FarmersPage() {
     // Filter by search term
     if (searchTerm) {
       const term = searchTerm.toLowerCase()
-      result = result.filter((f: Farmer) =>
-        f.name.toLowerCase().includes(term) ||
-        f.phone.includes(term) ||
-        f.village.toLowerCase().includes(term)
-      )
+      result = result.filter((f: Farmer) => {
+        // Search by crops first (higher priority for buyers)
+        const cropMatch = f.farms?.some((farm: any) =>
+          farm.crops?.some((crop: any) =>
+            crop.toLowerCase().includes(term)
+          )
+        )
+
+        // Also search by farmer info
+        const farmerMatch =
+          f.name.toLowerCase().includes(term) ||
+          f.phone.includes(term) ||
+          f.village.toLowerCase().includes(term)
+
+        return cropMatch || farmerMatch
+      })
     }
 
     // Sort
@@ -71,7 +82,7 @@ export default function FarmersPage() {
         <div>
           <input
             type="text"
-            placeholder="Search by name, phone, or village..."
+            placeholder="Search crops (e.g. sesame seeds, ginger), names, phone or village..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
             className="w-full bg-[#1e2028] border border-white/10 rounded px-4 py-2.5 text-sm text-white placeholder-gray-600 focus:border-[#F9D548]/50 focus:outline-none transition-colors"
@@ -110,36 +121,56 @@ export default function FarmersPage() {
             <thead className="border-b border-white/10">
               <tr className="text-left text-xs text-gray-500 uppercase tracking-wide">
                 <th className="px-6 py-4">Name</th>
+                <th className="px-6 py-4">Crops</th>
                 <th className="px-6 py-4">Phone</th>
                 <th className="px-6 py-4">Village</th>
                 <th className="px-6 py-4">District</th>
                 <th className="px-6 py-4">Country</th>
-                <th className="px-6 py-4">Farms</th>
                 <th className="px-6 py-4">Registered</th>
               </tr>
             </thead>
             <tbody>
-              {filteredAndSorted.map((f: Farmer) => (
-                <tr key={f.id} className="border-t border-white/5 hover:bg-white/5 transition-colors">
-                  <td className="px-6 py-3">
-                    <Link href={`/agritrace/farmers/${f.id}`} className="font-medium text-white hover:text-[#F9D548] transition-colors">
-                      {f.name}
-                    </Link>
-                  </td>
-                  <td className="px-6 py-3 text-gray-400">{f.phone}</td>
-                  <td className="px-6 py-3 text-gray-400">{f.village}</td>
-                  <td className="px-6 py-3 text-gray-400">{f.district}</td>
-                  <td className="px-6 py-3">
-                    <span className="text-xs bg-white/10 px-2 py-0.5 rounded-full text-gray-300">{f.country}</span>
-                  </td>
-                  <td className="px-6 py-3">
-                    <span className="text-xs bg-[#F9D548]/10 text-[#F9D548] px-2 py-0.5 rounded-full">
-                      {f.farms?.length ?? 0}
-                    </span>
-                  </td>
-                  <td className="px-6 py-3 text-gray-500 text-xs">{new Date(f.createdAt).toLocaleDateString()}</td>
-                </tr>
-              ))}
+              {filteredAndSorted.map((f: Farmer) => {
+                // Get unique crops from all farms
+                const allCrops = Array.from(
+                  new Set(
+                    f.farms?.flatMap((farm: any) => farm.crops || []) || []
+                  )
+                ) as string[]
+
+                return (
+                  <tr key={f.id} className="border-t border-white/5 hover:bg-white/5 transition-colors">
+                    <td className="px-6 py-3">
+                      <Link href={`/agritrace/farmers/${f.id}`} className="font-medium text-white hover:text-[#F9D548] transition-colors">
+                        {f.name}
+                      </Link>
+                    </td>
+                    <td className="px-6 py-3">
+                      <div className="flex flex-wrap gap-1">
+                        {allCrops.length > 0 ? (
+                          allCrops.slice(0, 2).map((crop) => (
+                            <span key={crop} className="text-xs bg-[#F9D548]/20 text-[#F9D548] px-2 py-0.5 rounded">
+                              {crop}
+                            </span>
+                          ))
+                        ) : (
+                          <span className="text-xs text-gray-500">—</span>
+                        )}
+                        {allCrops.length > 2 && (
+                          <span className="text-xs text-gray-400">+{allCrops.length - 2} more</span>
+                        )}
+                      </div>
+                    </td>
+                    <td className="px-6 py-3 text-gray-400">{f.phone}</td>
+                    <td className="px-6 py-3 text-gray-400">{f.village}</td>
+                    <td className="px-6 py-3 text-gray-400">{f.district}</td>
+                    <td className="px-6 py-3">
+                      <span className="text-xs bg-white/10 px-2 py-0.5 rounded-full text-gray-300">{f.country}</span>
+                    </td>
+                    <td className="px-6 py-3 text-gray-500 text-xs">{new Date(f.createdAt).toLocaleDateString()}</td>
+                  </tr>
+                )
+              })}
             </tbody>
           </table>
         )}
