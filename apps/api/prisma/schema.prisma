@@ -21,6 +21,9 @@ model Farmer {
   updatedAt   DateTime  @updatedAt
 
   farms       Farm[]
+
+  @@index([createdAt])
+  @@index([name])
 }
 
 model Farm {
@@ -36,6 +39,9 @@ model Farm {
   updatedAt   DateTime  @updatedAt
 
   harvests    Harvest[]
+
+  @@index([farmerId])
+  @@index([createdAt])
 }
 
 model Harvest {
@@ -54,6 +60,11 @@ model Harvest {
 
   shipments       Shipment[]
   certifications  Certification[]
+
+  @@index([farmId])
+  @@index([createdAt])
+  @@index([harvestDate])
+  @@index([cropType])
 }
 
 model Shipment {
@@ -70,6 +81,10 @@ model Shipment {
   blockchainTxHash String?
   createdAt       DateTime        @default(now())
   updatedAt       DateTime        @updatedAt
+
+  @@index([harvestId])
+  @@index([status])
+  @@index([createdAt])
 }
 
 model Certification {
@@ -82,6 +97,10 @@ model Certification {
   expiresAt   DateTime?
   documentUrl String?
   createdAt   DateTime  @default(now())
+
+  @@index([harvestId])
+  @@index([type])
+  @@index([createdAt])
 }
 
 enum ShipmentStatus {
