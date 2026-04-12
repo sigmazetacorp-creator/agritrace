@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import bcrypt from 'bcryptjs'
 import { getRegisteredUsers } from '@/lib/userStore'
+import { isRateLimited, getRemainingRequests, getResetTime } from '@/lib/rateLimiter'
 
 // Mock admin user data
 const ADMIN_USERS = [
@@ -8,10 +9,57 @@ const ADMIN_USERS = [
   { email: 'zakariyya@qlfgroup.ng', password: 'setMeSecure456!', role: 'admin', name: 'Zakariyya Jibril' },
 ]
 
+function getClientIp(request: NextRequest): string {
+  const forwarded = request.headers.get('x-forwarded-for')
+  const ip = forwarded ? forwarded.split(',')[0].trim() : request.ip || 'unknown'
+  return ip
+}
+
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json()
     const { email, password } = body
+    const clientIp = getClientIp(request)
+
+    // Rate limit by IP: 8 requests per 15 minutes
+    const ipRateLimitKey = `login:ip:${clientIp}`
+    if (isRateLimited(ipRateLimitKey, { maxRequests: 8, windowMs: 15 * 60000 })) {
+      const resetTime = getResetTime(ipRateLimitKey, { maxRequests: 8, windowMs: 15 * 60000 })
+
+      return NextResponse.json(
+        { error: 'Too many login attempts. Please try again later.' },
+        {
+          status: 429,
+          headers: {
+            'Retry-After': Math.ceil(resetTime / 1000).toString(),
+            'X-RateLimit-Limit': '8',
+            'X-RateLimit-Remaining': '0',
+            'X-RateLimit-Reset': new Date(Date.now() + resetTime).toISOString(),
+          }
+        }
+      )
+    }
+
+    // Rate limit by email: 5 requests per 15 minutes (stricter for account enumeration)
+    if (email) {
+      const emailRateLimitKey = `login:email:${email}`
+      if (isRateLimited(emailRateLimitKey, { maxRequests: 5, windowMs: 15 * 60000 })) {
+        const resetTime = getResetTime(emailRateLimitKey, { maxRequests: 5, windowMs: 15 * 60000 })
+
+        return NextResponse.json(
+          { error: 'Too many login attempts for this email. Please try again later.' },
+          {
+            status: 429,
+            headers: {
+              'Retry-After': Math.ceil(resetTime / 1000).toString(),
+              'X-RateLimit-Limit': '5',
+              'X-RateLimit-Remaining': '0',
+              'X-RateLimit-Reset': new Date(Date.now() + resetTime).toISOString(),
+            }
+          }
+        )
+      }
+    }
 
     if (!email || !password) {
       return NextResponse.json(

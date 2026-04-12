@@ -1,9 +1,38 @@
 import { NextRequest, NextResponse } from 'next/server'
 import bcrypt from 'bcryptjs'
 import { getRegisteredUsers, userExists, addUser } from '@/lib/userStore'
+import { isRateLimited, getRemainingRequests, getResetTime } from '@/lib/rateLimiter'
+
+function getClientIp(request: NextRequest): string {
+  const forwarded = request.headers.get('x-forwarded-for')
+  const ip = forwarded ? forwarded.split(',')[0].trim() : request.ip || 'unknown'
+  return ip
+}
 
 export async function POST(request: NextRequest) {
   try {
+    const clientIp = getClientIp(request)
+    const rateLimitKey = `signup:${clientIp}`
+
+    // Check rate limit: 5 requests per 15 minutes
+    if (isRateLimited(rateLimitKey, { maxRequests: 5, windowMs: 15 * 60000 })) {
+      const remaining = getRemainingRequests(rateLimitKey)
+      const resetTime = getResetTime(rateLimitKey, { maxRequests: 5, windowMs: 15 * 60000 })
+
+      return NextResponse.json(
+        { error: 'Too many signup attempts. Please try again later.' },
+        {
+          status: 429,
+          headers: {
+            'Retry-After': Math.ceil(resetTime / 1000).toString(),
+            'X-RateLimit-Limit': '5',
+            'X-RateLimit-Remaining': remaining.toString(),
+            'X-RateLimit-Reset': new Date(Date.now() + resetTime).toISOString(),
+          }
+        }
+      )
+    }
+
     const body = await request.json()
     const { name, email, password, userType } = body
 

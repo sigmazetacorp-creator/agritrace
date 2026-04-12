@@ -1,7 +1,35 @@
 import { NextRequest, NextResponse } from 'next/server'
+import { isRateLimited, getResetTime } from '@/lib/rateLimiter'
+
+function getClientIp(request: NextRequest): string {
+  const forwarded = request.headers.get('x-forwarded-for')
+  const ip = forwarded ? forwarded.split(',')[0].trim() : request.ip || 'unknown'
+  return ip
+}
 
 export async function POST(request: NextRequest) {
   try {
+    const clientIp = getClientIp(request)
+    const rateLimitKey = `contact:${clientIp}`
+
+    // Check rate limit: 3 requests per hour (prevent spam)
+    if (isRateLimited(rateLimitKey, { maxRequests: 3, windowMs: 60 * 60000 })) {
+      const resetTime = getResetTime(rateLimitKey, { maxRequests: 3, windowMs: 60 * 60000 })
+
+      return NextResponse.json(
+        { error: 'Too many contact form submissions. Please try again later.' },
+        {
+          status: 429,
+          headers: {
+            'Retry-After': Math.ceil(resetTime / 1000).toString(),
+            'X-RateLimit-Limit': '3',
+            'X-RateLimit-Remaining': '0',
+            'X-RateLimit-Reset': new Date(Date.now() + resetTime).toISOString(),
+          }
+        }
+      )
+    }
+
     const body = await request.json()
     const { name, email, subject, message } = body
 
