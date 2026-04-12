@@ -22,7 +22,8 @@
     "dotenv": "^16.4.5",
     "ethers": "^6.16.0",
     "fastify": "^4.27.0",
-    "qs": "^6.14.2"
+    "qs": "^6.14.2",
+    "zod": "^4.3.6"
   },
   "devDependencies": {
     "@fastify/rate-limit": "^8.1.1",

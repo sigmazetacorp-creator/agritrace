@@ -1,5 +1,6 @@
 import { FastifyInstance } from 'fastify'
 import { PrismaClient } from '@prisma/client'
+import { createHarvestSchema, validateInput, type CreateHarvestInput } from '../lib/validation'
 import { hashHarvest, recordHarvestOnChain } from '../lib/blockchain'
 
 const prisma = new PrismaClient()
@@ -30,15 +31,16 @@ export async function harvestRoutes(app: FastifyInstance) {
 
   // POST /api/harvests — log a harvest (used by agents via web)
   app.post('/', async (request, reply) => {
-    const body = request.body as {
-      farmId: string
-      cropType: string
-      quantityKg: number
-      harvestDate: string
-      qualityGrade?: string
-      notes?: string
+    const validation = validateInput<CreateHarvestInput>(createHarvestSchema, request.body)
+
+    if (!validation.valid) {
+      return reply.status(400).send({
+        error: 'Validation failed',
+        details: validation.errors
+      })
     }
 
+    const body = validation.data
     const qrCode = `AGT-${Date.now()}`
 
     // Create in database first

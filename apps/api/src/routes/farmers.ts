@@ -1,5 +1,6 @@
 import { FastifyInstance } from 'fastify'
 import { PrismaClient } from '@prisma/client'
+import { createFarmerSchema, validateInput, type CreateFarmerInput } from '../lib/validation'
 
 const prisma = new PrismaClient()
 
@@ -42,16 +43,16 @@ export async function farmerRoutes(app: FastifyInstance) {
 
   // POST /api/farmers — create farmer (used by cooperative agents via web)
   app.post('/', async (request, reply) => {
-    const body = request.body as {
-      phone: string
-      name: string
-      village: string
-      district: string
-      country?: string
-      nationalId?: string
-      latitude?: number
-      longitude?: number
+    const validation = validateInput<CreateFarmerInput>(createFarmerSchema, request.body)
+
+    if (!validation.valid) {
+      return reply.status(400).send({
+        error: 'Validation failed',
+        details: validation.errors
+      })
     }
+
+    const body = validation.data
     const farmer = await prisma.farmer.create({
       data: { ...body, country: body.country ?? countryFromPhone(body.phone) }
     })
