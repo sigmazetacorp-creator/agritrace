@@ -89,3 +89,15 @@ export const fetchHarvestByQr = async (qrCode: string): Promise<Harvest> => {
   const { data } = await api.get(`/api/harvests/qr/${qrCode}`)
   return data
 }
+
+export const createHarvest = async (harvestData: {
+  farmId: string
+  cropType: string
+  quantityKg: number
+  harvestDate: string
+  qualityGrade?: string
+  notes?: string
+}): Promise<Harvest> => {
+  const { data } = await api.post('/api/harvests', harvestData)
+  return data
+}

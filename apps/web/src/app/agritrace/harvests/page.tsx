@@ -12,8 +12,18 @@ export default function HarvestsPage() {
 
   return (
     <div>
-      <h1 className="text-3xl font-extrabold text-white mb-1">Harvests</h1>
-      <p className="text-gray-500 text-sm mb-8">All logged harvests across all farms</p>
+      <div className="flex items-center justify-between mb-8">
+        <div>
+          <h1 className="text-3xl font-extrabold text-white mb-1">Harvests</h1>
+          <p className="text-gray-500 text-sm">All logged harvests across all farms</p>
+        </div>
+        <Link
+          href="/agritrace/harvests/new"
+          className="px-6 py-3 bg-[#F9D548] text-[#181A20] rounded-lg font-bold hover:bg-yellow-300 transition-colors"
+        >
+          + Log Harvest
+        </Link>
+      </div>
 
       {isLoading ? (
         <div className="bg-[#1e2028] rounded-xl border border-white/10 p-8 text-gray-500 text-sm">Loading...</div>
