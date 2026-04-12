@@ -1,5 +1,11 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { isRateLimited, getResetTime } from '@/lib/rateLimiter'
+import sgMail from '@sendgrid/mail'
+
+// Initialize SendGrid if API key is available
+if (process.env.SENDGRID_API_KEY) {
+  sgMail.setApiKey(process.env.SENDGRID_API_KEY)
+}
 
 function getClientIp(request: NextRequest): string {
   const forwarded = request.headers.get('x-forwarded-for')
@@ -50,20 +56,48 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    // For now, log to console (in production, integrate with SendGrid, Mailgun, or similar)
-    console.log('Contact form submission:', { name, email, subject, message })
+    // Log contact form submission
+    console.log('Contact form submission:', { name, email, subject, message, timestamp: new Date().toISOString() })
 
-    // TODO: Integrate with email service
-    // Example with SendGrid:
-    // const sgMail = require('@sendgrid/mail');
-    // sgMail.setApiKey(process.env.SENDGRID_API_KEY);
-    // await sgMail.send({
-    //   to: 'aniekan@qlfgroup.ng',
-    //   from: email,
-    //   replyTo: email,
-    //   subject: `Contact Form: ${subject}`,
-    //   text: `${message}\n\nFrom: ${name} (${email})`,
-    // });
+    // Send email if SendGrid is configured
+    if (process.env.SENDGRID_API_KEY && process.env.SENDGRID_FROM_EMAIL) {
+      try {
+        await sgMail.send({
+          to: process.env.SENDGRID_TO_EMAIL || 'aniekan@qlfgroup.ng',
+          from: process.env.SENDGRID_FROM_EMAIL,
+          replyTo: email,
+          subject: `Contact Form: ${subject}`,
+          html: `
+            <h2>New Contact Form Submission</h2>
+            <p><strong>Name:</strong> ${escapeHtml(name)}</p>
+            <p><strong>Email:</strong> ${escapeHtml(email)}</p>
+            <p><strong>Subject:</strong> ${escapeHtml(subject)}</p>
+            <h3>Message:</h3>
+            <p>${escapeHtml(message).replace(/\n/g, '<br>')}</p>
+            <hr>
+            <p><small>Submitted at: ${new Date().toISOString()}</small></p>
+          `,
+          text: `
+New Contact Form Submission
+
+Name: ${name}
+Email: ${email}
+Subject: ${subject}
+
+Message:
+${message}
+
+---
+Submitted at: ${new Date().toISOString()}
+          `
+        })
+        console.log('Email sent successfully to:', process.env.SENDGRID_TO_EMAIL || 'aniekan@qlfgroup.ng')
+      } catch (emailError) {
+        console.error('SendGrid error:', emailError)
+        // Don't fail the request if email fails - still return success to user
+        // but log the error for debugging
+      }
+    }
 
     return NextResponse.json(
       { success: true, message: 'Contact form submitted successfully' },
@@ -76,4 +110,16 @@ export async function POST(request: NextRequest) {
       { status: 500 }
     )
   }
+}
+
+// Helper function to escape HTML special characters
+function escapeHtml(text: string): string {
+  const map: { [key: string]: string } = {
+    '&': '&amp;',
+    '<': '&lt;',
+    '>': '&gt;',
+    '"': '&quot;',
+    "'": '&#039;',
+  }
+  return text.replace(/[&<>"']/g, (m: string) => map[m])
 }
