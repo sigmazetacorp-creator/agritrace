@@ -1,13 +1,11 @@
 import { FastifyInstance } from 'fastify'
-import { PrismaClient } from '@prisma/client'
+import { getPrisma } from '../lib/prisma'
 import { createFarmSchema, validateInput, type CreateFarmInput } from '../lib/validation'
-
-const prisma = new PrismaClient()
 
 export async function farmRoutes(app: FastifyInstance) {
   // GET /api/farms — list all farms
   app.get('/', async () => {
-    return prisma.farm.findMany({
+    return getPrisma().farm.findMany({
       include: { farmer: true, harvests: true },
       orderBy: { createdAt: 'desc' }
     })
@@ -25,7 +23,7 @@ export async function farmRoutes(app: FastifyInstance) {
     }
 
     const body = validation.data
-    const farm = await prisma.farm.create({
+    const farm = await getPrisma().farm.create({
       data: {
         farmerId: body.farmerId,
         name: body.name,

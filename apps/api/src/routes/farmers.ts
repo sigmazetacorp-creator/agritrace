@@ -1,8 +1,6 @@
 import { FastifyInstance } from 'fastify'
-import { PrismaClient } from '@prisma/client'
+import { getPrisma } from '../lib/prisma'
 import { createFarmerSchema, validateInput, type CreateFarmerInput } from '../lib/validation'
-
-const prisma = new PrismaClient()
 
 function countryFromPhone(phone: string): string {
   if (phone.startsWith('+234')) return 'NG'
@@ -16,7 +14,7 @@ function countryFromPhone(phone: string): string {
 export async function farmerRoutes(app: FastifyInstance) {
   // GET /api/farmers — list all farmers
   app.get('/', async () => {
-    return prisma.farmer.findMany({
+    return getPrisma().farmer.findMany({
       include: { farms: true },
       orderBy: { createdAt: 'desc' }
     })
@@ -25,7 +23,7 @@ export async function farmerRoutes(app: FastifyInstance) {
   // GET /api/farmers/:id — single farmer with full history
   app.get('/:id', async (request, reply) => {
     const { id } = request.params as { id: string }
-    const farmer = await prisma.farmer.findUnique({
+    const farmer = await getPrisma().farmer.findUnique({
       where: { id },
       include: {
         farms: {
@@ -53,7 +51,7 @@ export async function farmerRoutes(app: FastifyInstance) {
     }
 
     const body = validation.data
-    const farmer = await prisma.farmer.create({
+    const farmer = await getPrisma().farmer.create({
       data: { ...body, country: body.country ?? countryFromPhone(body.phone) }
     })
     return reply.status(201).send(farmer)

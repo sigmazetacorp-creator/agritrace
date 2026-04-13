@@ -1,5 +1,5 @@
 import { FastifyInstance } from 'fastify'
-import { PrismaClient } from '@prisma/client'
+import { getPrisma } from '../lib/prisma'
 import {
   farmerNameSchema,
   villageSchema,
@@ -9,8 +9,6 @@ import {
   farmIndexSchema,
   validateUSSDInput,
 } from '../lib/ussdValidation'
-
-const prisma = new PrismaClient()
 
 function countryFromPhone(phone: string): string {
   if (phone.startsWith('+234')) return 'NG'
@@ -85,11 +83,11 @@ export async function ussdRoutes(app: FastifyInstance) {
           const district = input[3].trim()
 
           try {
-            const existing = await prisma.farmer.findUnique({ where: { phone: phoneNumber } })
+            const existing = await getPrisma().farmer.findUnique({ where: { phone: phoneNumber } })
             if (existing) {
               response = `END You are already registered as ${existing.name}.`
             } else {
-              await prisma.farmer.create({
+              await getPrisma().farmer.create({
                 data: { phone: phoneNumber, name, village, district, country: countryFromPhone(phoneNumber) }
               })
               response = `END Registration successful!
@@ -108,12 +106,12 @@ You can now log harvests.`
     // ── HARVEST LOGGING FLOW ───────────────────────────────
     } else if (input[0] === '2') {
       try {
-        const farmer = await prisma.farmer.findUnique({ where: { phone: phoneNumber } })
+        const farmer = await getPrisma().farmer.findUnique({ where: { phone: phoneNumber } })
 
         if (!farmer) {
           response = 'END You are not registered. Please dial again and select option 1.'
         } else if (level === 1) {
-          const farms = await prisma.farm.findMany({ where: { farmerId: farmer.id } })
+          const farms = await getPrisma().farm.findMany({ where: { farmerId: farmer.id } })
           if (farms.length === 0) {
             response = 'END You have no farms registered. Contact your cooperative agent to add a farm.'
           } else {
@@ -130,7 +128,7 @@ You can now log harvests.`
           if (!farmValidation.valid) {
             response = 'END Invalid farm selection. Please try again.'
           } else {
-            const farms = await prisma.farm.findMany({ where: { farmerId: farmer.id } })
+            const farms = await getPrisma().farm.findMany({ where: { farmerId: farmer.id } })
             const farmIndex = parseInt(input[1]) - 1
             const farm = farms[farmIndex]
 
@@ -149,7 +147,7 @@ You can now log harvests.`
                 const cropType   = input[2].trim()
                 const quantityKg = parseFloat(input[3])
 
-                const harvest = await prisma.harvest.create({
+                const harvest = await getPrisma().harvest.create({
                   data: {
                     farmId: farm.id,
                     cropType,
@@ -175,11 +173,11 @@ ID: ${harvest.qrCode}`
     // ── MY FARMS ───────────────────────────────────────────
     } else if (input[0] === '3') {
       try {
-        const farmer = await prisma.farmer.findUnique({ where: { phone: phoneNumber } })
+        const farmer = await getPrisma().farmer.findUnique({ where: { phone: phoneNumber } })
         if (!farmer) {
           response = 'END You are not registered.'
         } else {
-          const farms = await prisma.farm.findMany({ where: { farmerId: farmer.id } })
+          const farms = await getPrisma().farm.findMany({ where: { farmerId: farmer.id } })
           if (farms.length === 0) {
             response = 'END No farms found. Contact your cooperative agent.'
           } else {

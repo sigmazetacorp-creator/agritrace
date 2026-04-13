@@ -1,14 +1,12 @@
 import { FastifyInstance } from 'fastify'
-import { PrismaClient } from '@prisma/client'
+import { getPrisma } from '../lib/prisma'
 import { createHarvestSchema, validateInput, type CreateHarvestInput } from '../lib/validation'
 import { hashHarvest, recordHarvestOnChain } from '../lib/blockchain'
-
-const prisma = new PrismaClient()
 
 export async function harvestRoutes(app: FastifyInstance) {
   // GET /api/harvests — list all harvests
   app.get('/', async () => {
-    return prisma.harvest.findMany({
+    return getPrisma().harvest.findMany({
       include: { farm: { include: { farmer: true } } },
       orderBy: { harvestDate: 'desc' }
     })
@@ -17,7 +15,7 @@ export async function harvestRoutes(app: FastifyInstance) {
   // GET /api/harvests/:qrCode — lookup by QR code (used by buyers)
   app.get('/qr/:qrCode', async (request, reply) => {
     const { qrCode } = request.params as { qrCode: string }
-    const harvest = await prisma.harvest.findUnique({
+    const harvest = await getPrisma().harvest.findUnique({
       where: { qrCode },
       include: {
         farm: { include: { farmer: true } },
@@ -44,7 +42,7 @@ export async function harvestRoutes(app: FastifyInstance) {
     const qrCode = `AGT-${Date.now()}`
 
     // Create in database first
-    const harvest = await prisma.harvest.create({
+    const harvest = await getPrisma().harvest.create({
       data: {
         ...body,
         harvestDate: new Date(body.harvestDate),
@@ -63,7 +61,7 @@ export async function harvestRoutes(app: FastifyInstance) {
 
     recordHarvestOnChain(qrCode, dataHash).then(async txHash => {
       if (txHash) {
-        await prisma.harvest.updateMany({
+        await getPrisma().harvest.updateMany({
           where: { id: harvest.id },
           data: { blockchainTxHash: txHash }
         })
